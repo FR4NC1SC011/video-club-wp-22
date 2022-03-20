@@ -1,34 +1,35 @@
+// copies
 const express = require('express');
-const { Director } = require('../db');
+const { Copy } = require('../db');
 
 function list(req, res, next) {
-    Director.findAll({include: ['movies']})
+    Copy.findAll({})
             .then(objects => res.json(objects))
             .catch(err => res.send(err));
 }
 
 function index(req, res, next){
     const id = req.params.id;
-    Director.findByPk(id)
+    Copy.findByPk(id)
             .then(object => res.json(object))
             .catch(err => res.send(err));
 }
 
 function create(req, res, next){
-    const name = req.body.name;
-    const lastName = req.body.lastName;
+    const number = req.body.number;
+    const movie_id = req.body.movie_id;
 
-    let director = new Object({
-        name: name,
-        lastName: lastName
+    let copie = new Object({
+      number: number,
+      movie_id: movie_id,
     });
 
-    Director.create(director).then(obj => res.json(obj)).catch(err => res.send(err));
+    Copy.create(member).then(obj => res.json(obj)).catch(err => res.send(err));
 }
 
 function replace(req, res, next){
     const id = req.params.id;
-    Director.findByPk(id)
+    Copy.findByPk(id)
             .then((object) => {
                 const name = req.body.name ? req.body.name : "";
             })
@@ -42,7 +43,7 @@ function edit(req, res, next){
 
 function destroy(req, res, next){
     const id = req.params.id;
-    Director.destroy({where:{id:id}})
+    Copy.destroy({where:{id:id}})
             .then(obj => res.json(obj))
             .catch(err => res.send(err));
 }

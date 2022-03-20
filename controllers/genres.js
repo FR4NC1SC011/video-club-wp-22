@@ -1,36 +1,36 @@
 const express = require('express');
-const { Director } = require('../db');
+const { Genre } = require('../db');
 
 function list(req, res, next) {
-    Director.findAll({include: ['movies']})
+    Genre.findAll({})
             .then(objects => res.json(objects))
             .catch(err => res.send(err));
 }
 
 function index(req, res, next){
     const id = req.params.id;
-    Director.findByPk(id)
+    Genre.findByPk(id)
             .then(object => res.json(object))
             .catch(err => res.send(err));
 }
 
 function create(req, res, next){
-    const name = req.body.name;
-    const lastName = req.body.lastName;
+    const description = req.body.description;
+    const status = req.body.status;
 
-    let director = new Object({
-        name: name,
-        lastName: lastName
+    let genre = new Object({
+        description: description,
+        status: status
     });
 
-    Director.create(director).then(obj => res.json(obj)).catch(err => res.send(err));
+    Genre.create(genre).then(obj => res.json(obj)).catch(err => res.send(err));
 }
 
 function replace(req, res, next){
     const id = req.params.id;
-    Director.findByPk(id)
+    Genre.findByPk(id)
             .then((object) => {
-                const name = req.body.name ? req.body.name : "";
+                const description = req.body.description ? req.body.description : "";
             })
             .catch();
 }
@@ -42,7 +42,7 @@ function edit(req, res, next){
 
 function destroy(req, res, next){
     const id = req.params.id;
-    Director.destroy({where:{id:id}})
+    Genre.destroy({where:{id:id}})
             .then(obj => res.json(obj))
             .catch(err => res.send(err));
 }
