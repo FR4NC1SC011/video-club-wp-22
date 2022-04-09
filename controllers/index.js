@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const secret = require('config');
 
 function home(req, res, next) {
   res.render('index', {title: 'Express'});
@@ -20,7 +21,7 @@ function login(req, res, next) {
           });
         }
         if(hash === user.hash) {
-          const jwtKey = "046f335d25ae4734f9ba7bf1fc729bc4";
+          const jwtKey = config.get("secret.key");
           //Login Ok
           res.status(200).json({
             message: "Login Correcto",

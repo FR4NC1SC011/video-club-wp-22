@@ -4,7 +4,7 @@ const async = require('async');
 const User = require('../models/user');
 
 function list(req, res, next) {
-  User.find().then(objs => res.status(200).json({
+  User.paginate({}, {page: 1}).then(objs => res.status(200).json({
     message: "Lista de usuarios registrados.",
     obj: objs
   })).catch(e => res.status(500).json({

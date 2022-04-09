@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
 const expressJwt = require('express-jwt');
+const config = require('config');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -14,9 +15,9 @@ const moviesRouter = require('./routes/movies');
 const genresRouter = require('./routes/genres');
 const membersRouter = require('./routes/members');
 
-const jwtKey = "046f335d25ae4734f9ba7bf1fc729bc4";
+const jwtKey = config.get("secret.key");
 
-const uri = "mongodb://localhost:27017/video-club";
+const uri = config.get("dbChain");
 mongoose.connect(uri);
 const db = mongoose.connection;
 
