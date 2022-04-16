@@ -20,12 +20,12 @@ function login(req, res, next) {
             message:"Credenciales no Validas 1"
           });
         }
-        if(hash === user.hash) {
-          const jwtKey = config.get("secret.key");
+        if(hash === user.password) {
+          const jwtKey = secret.get("secret.key");
           //Login Ok
           res.status(200).json({
             message: "Login Correcto",
-            obj: jwt.sign({exp: Math.floor(Date.now()/1000) + 3600, data: user.id}, jwtKey),
+            obj: jwt.sign({exp: Math.floor(Date.now()/1000) + 86400, data: user.id}, jwtKey),
           });
         } else {
           res.status(403).json({
