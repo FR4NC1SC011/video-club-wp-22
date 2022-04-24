@@ -2,20 +2,20 @@ const express = require('express');
 const Copy = require('../models/copy');
 const Genre = require('../models/genre');
 
-// TODO: change movie to copy
+// TODO: Hacer que los mensajes se obtengan del archivo que esta dentro de 'locales/'
 function list(req, res, next) {
-  Movie.find().populate("_genre").then(objs => res.status(200).json({
-    message: "Lista de Peliculas registradas.",
+  Copy.find().populate("_genre").then(objs => res.status(200).json({
+    message: "Lista de copias registradas.",
     obj: objs
   })).catch(e => res.status(500).json({
-    message: "No se pudo consultar la lista de peliculas",
+    message: "No se pudo consultar la lista de copias",
     obj: e
   }));
 }
 
 function index(req, res, next){
   const id = req.params.id;
-  Movie.findOne({"_id":id}).then(obj => res.status(200).json({
+  Copy.findOne({"_id":id}).then(obj => res.status(200).json({
     message: `Pelicula con el id ${id}.`,
     obj: obj
   })).catch(e => res.status(500).json({
@@ -24,6 +24,7 @@ function index(req, res, next){
   }));
 }
 
+// FIXME: actualmente funciona como si quisiera crear una pelicula
 function create(req, res, next){
   const title = req.body.title;
   const genreId = req.body.genreId;
@@ -50,6 +51,7 @@ function create(req, res, next){
 
 }
 
+// FIXME: actualmente funciona como si quisiera reemplazar una pelicula
 function replace(req, res, next){
   const id = req.params.id;
   let title = req.body.title ? req.body.title : "";
@@ -67,6 +69,7 @@ function replace(req, res, next){
   }))
 }
 
+// FIXME: actualmente funciona como si quisiera editar una pelicula
 function edit(req, res, next){
   const id = req.params.id;
   const title = req.body.title;
@@ -88,7 +91,7 @@ function edit(req, res, next){
 
 function destroy(req, res, next){
   const id = req.params.id;
-  Movie.remove({"_id":id}).then(obj => res.status(200).json({
+  Copy.remove({"_id":id}).then(obj => res.status(200).json({
     message: "Pelicula Eliminada Correctamente",
     obj: obj
   })).catch(e => res.status(500).json({

@@ -3,9 +3,9 @@ const controller = require('../controllers/genres');
 
 const router = express.Router();
 
-router.get('/', controller.list);
+router.get('/:page?', controller.list);
 
-router.get('/:id', controller.index);
+router.get('/show/:id', controller.index);
 
 router.post('/', controller.create);
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate=require('mongoose-paginate-v2');
 
 const schema = mongoose.Schema({
   _date:Date,
@@ -14,8 +15,11 @@ const schema = mongoose.Schema({
 
 class Booking {
 
-  constructor(title) {
-    this._date = description;
+  constructor(name, lastName, phone, status) {
+    this._name = name;
+    this._lastName = lastName;
+    this._phone = phone;
+    this._status = status;
   }
 
   get date() {
@@ -45,5 +49,5 @@ class Booking {
 }
 
 schema.loadClass(Booking);
-
+schema.plugin(mongoosePaginate);
 module.exports = mongoose.model('Booking', schema);

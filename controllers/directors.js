@@ -1,50 +1,53 @@
 const express = require('express');
+const config=require('config');
 const Director = require('../models/director');
+
 
 function list(req, res, next) {
   Director.find().then(objs => res.status(200).json({
-    message: "Lista de Directores registrados.",
+    message:res.__('oklist.director'),
     obj: objs
   })).catch(e => res.status(500).json({
-    message: "No se pudo consultar la lista de directores",
+    message: res.__('oklist.director'),
     obj: e
   }));
 }
 
-function index(req, res, next){
+function index(req, res, next) {
   const id = req.params.id;
   Director.findOne({"_id":id}).then(obj => res.status(200).json({
-    message: `Director con el id ${id}.`,
+    message:res.__('ok.director'),
     obj: obj
   })).catch(e => res.status(500).json({
-    message: `No se pudo recuperar el director con el id ${id}.`,
+    message:res.__('bad.director'),
     obj: e
   }));
 }
 
-function create(req, res, next){
-    const name = req.body.name;
-    const lastName = req.body.lastName;
+function create(req, res, next) {
+  const name = req.body.name;
+  const lastName = req.body.lastName;
 
-    let director = new Director({
-        name: name,
-        lastName: lastName
-    });
+  let director = new Director({
+    name:name,
+    lastName:lastName
+  });
 
-    director.save().then(obj => res.status(200).json({
-        message: 'Director creado correctamente',
-        obj: obj
-    }))
-         .catch(e => res.status(500).json({
-             message: 'No se creo el director',
-             obj: e
-         }));
+  director.save().then(obj => res.status(200).json({
+    message:res.__('cr.director'),
+    obj: obj
+  })).catch(ex => res.status(500).json({
+    message:res.__('ncr.director'),
+    obj: ex
+  }));
 }
 
-function replace(req, res, next){
+
+
+function replace(req, res, next) {
   const id = req.params.id;
-  let name = req.body.name ? req.body.name : "";
-  let lastName = req.body.lastName ? req.body.lastName : "";
+  let name = req.body.name ? req.body.name: "";
+  let lastName = req.body.lastName ? req.body.lastName: "";
 
   let director = new Object({
     _name: name,
@@ -52,18 +55,18 @@ function replace(req, res, next){
   });
 
   Director.findOneAndUpdate({"_id":id}, director).then(obj => res.status(200).json({
-    message: "Director reemplazado correctamente",
+    message:res.__('rp.director'),
     obj: obj
   })).catch(e => res.status(500).json({
-    message: "No se pudo actualizar el director",
+    message: res.__('nrp.director'),
     obj: e
-  }))
+  }));
 }
 
-function edit(req, res, next){
+function edit(req, res, next) {
   const id = req.params.id;
-  const name = req.body.name;
-  const lastName = req.body.lastName;
+  let name = req.body.name;
+  let lastName = req.body.lastName;
 
   let director = new Object();
 
@@ -76,21 +79,21 @@ function edit(req, res, next){
   }
 
   Director.findOneAndUpdate({"_id":id}, director).then(obj => res.status(200).json({
-    message: "Director actualizado correctamente",
+    message: res.__('up.director'),
     obj: obj
-  })).catch( e => res.status(500).json({
-    message: "No se pudo actualizar el director",
+  })).catch(e => res.status(500).json({
+    message:res.__('nup.directorr'),
     obj: e
   }));
 }
 
-function destroy(req, res, next){
+function destroy(req, res, next) {
   const id = req.params.id;
   Director.remove({"_id":id}).then(obj => res.status(200).json({
-    message: "Director Eliminado Correctamente",
+    message:res.__('dl.director'),
     obj: obj
   })).catch(e => res.status(500).json({
-    message: "No se Pudo eliminar el Director",
+    message: res.__('ndl.director'),
     obj: e
   }));
 }

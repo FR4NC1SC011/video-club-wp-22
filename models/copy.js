@@ -12,28 +12,46 @@ const schema = mongoose.Schema({
 
 class Copy {
 
-  constructor(title) {
-    this._title = description;
+  constructor(name, lastName, phone, status){
+    this._name = name;
+    this._lastName = lastName;
+    this._movie = phone;
+    this._status = status;
   }
 
-  get title() {
-    return this._title;
+  get name() {
+    return this._name;
   }
 
-  set title(v) {
-    this._title = v;
+  set name(v) {
+    this._name = v;
   }
 
-  get genre() {
-    return this._genre;
+  get lastName(){
+      return this._lastName;
   }
 
-  set genre(v) {
-    this._genre = v;
+  set lastName(v){
+      this._lastName = v;
   }
 
+  get movie(){
+      return this._movie;
+  }
+
+  set movie(v){
+      this._movie = v;
+  }
+
+  get status(){
+      return this._status;
+  }
+
+  set status(v){
+      this._status = v;
+  }
 }
 
-schema.loadClass(Movie);
-
-module.exports = mongoose.model('Movie', schema);
+schema.loadClass(Copy);
+schema.plugin(mongoosePaginate);
+module.exports = mongoose.model('Copy', schema);

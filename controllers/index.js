@@ -17,7 +17,7 @@ function login(req, res, next) {
         if (err) {
           // Login No Ok
           res.status(403).json({
-            message:"Credenciales no Validas 1"
+            message: res.__('bad.login')
           });
         }
         if(hash === user.password) {
@@ -29,19 +29,19 @@ function login(req, res, next) {
           });
         } else {
           res.status(403).json({
-            message:"Credenciales no Validas 2"
+            message:"Credenciales no Validas 3"
           });
         }
       });
     } else {
       res.status(403).json({
-        message:"Credenciales no Validas 3"
+        message: res.__('bad.login')
       });
     }
   }).catch((err) => {
     // Login No Ok
     res.status(403).json({
-      message:"Credenciales no Validas 4"
+      message: res.__('bad.login')
     });
 
   });

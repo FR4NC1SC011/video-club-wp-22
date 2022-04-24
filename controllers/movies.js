@@ -1,73 +1,71 @@
 const express = require('express');
+const config=require('config');
 const Movie = require('../models/movie');
 const Genre = require('../models/genre');
 
 function list(req, res, next) {
   Movie.find().populate("_genre").then(objs => res.status(200).json({
-    message: "Lista de Peliculas registradas.",
-    obj: objs
+      message: res.__('oklist.movie'),
+      obj: objs
   })).catch(e => res.status(500).json({
-    message: "No se pudo consultar la lista de peliculas",
-    obj: e
+      message: res.__('oklist.movie'),
+      obj: e
   }));
 }
 
-function index(req, res, next){
+function index(req, res, next) {
   const id = req.params.id;
   Movie.findOne({"_id":id}).then(obj => res.status(200).json({
-    message: `Pelicula con el id ${id}.`,
-    obj: obj
+      message: res.__('ok.movie'),
+      oj: obj
   })).catch(e => res.status(500).json({
-    message: `No se pudo recuperar la pelicula con el id ${id}.`,
-    obj: e
+      message:res.__('bad.movie'),
+      obj: e
   }));
 }
 
-function create(req, res, next){
+function create(req, res, next) {
   const title = req.body.title;
-  const genreId = req.body.genreId;
+  const genereId = req.body.genereId;
 
-  Genre.findOne({"_id":genreId}).then((genre) => {
+  Genre.findOne({"_id":genereId}).then((genre)=>{
+    let movie = new Movie({
+        title:title,
+        genre:genre
+    });
 
-  let movie = new Movie({
-    title: title,
-    genre: genre,
-  });
-
-  movie.save().then(obj => res.status(200).json({
-    message: 'Pelicula creada correctamente',
-    obj: obj
-  })).catch(e => res.status(500).json({
-    message: 'Error: No se creo la pelicula',
-    obj: e
+    movie.save().then(obj => res.status(200).json({
+        message: res.__('cr.movie'),
+        obj: obj
+    })).catch(ex => res.status(500).json({
+        message: res.__('ncr.movie'),
+        obj: ex
+    }));
+  }).catch(ex=>re.status(500).json({
+    message:res.__('ncr.movie'),
+    obj:ex
   }));
-
-  }).catch(e => res.status(500).json({
-    message: "No se encontro el genero de la pelicula a almacenar",
-    obj: e
-  }));
-
 }
 
-function replace(req, res, next){
+
+function replace(req, res, next) {
   const id = req.params.id;
-  let title = req.body.title ? req.body.title : "";
+  let title = req.body.title ? req.body.title: "";
 
   let movie = new Object({
-    _title: title,
+      _title:title,
   });
 
   Movie.findOneAndUpdate({"_id":id}, movie).then(obj => res.status(200).json({
-    message: "Pelicula reemplazada correctamente",
-    obj: obj
+      message: res.__('rp.movie'),
+      oj: obj
   })).catch(e => res.status(500).json({
-    message: "No se pudo actualizar la pelicula",
-    obj: e
-  }))
+      message:res.__('nrp.movie'),
+      obj: e
+  }));
 }
 
-function edit(req, res, next){
-  const id = req.params.id;
+function edit(req, res, next) {
   const title = req.body.title;
 
   let movie = new Object();
@@ -77,24 +75,25 @@ function edit(req, res, next){
   }
 
   Movie.findOneAndUpdate({"_id":id}, movie).then(obj => res.status(200).json({
-    message: "Pelicula actualizada correctamente",
+    message: res.__('up.movie'),
     obj: obj
-  })).catch( e => res.status(500).json({
-    message: "No se pudo actualizar la pelicula",
+  })).catch(e => res.status(500).json({
+    message: res.__('nup.movie'),
     obj: e
   }));
 }
 
-function destroy(req, res, next){
+function destroy(req, res, next) {
   const id = req.params.id;
   Movie.remove({"_id":id}).then(obj => res.status(200).json({
-    message: "Pelicula Eliminada Correctamente",
+    message: res.__('dl.movie'),
     obj: obj
-  })).catch(e => res.status(500).json({
-    message: "No se Pudo eliminar la pelicula",
-    obj: e
+  })).catch(ex => res.status(500).json({
+    message: res.__('ndl.movie'),
+    obj: ex
   }));
 }
+
 
 module.exports = {
   list, index, create, replace, edit, destroy

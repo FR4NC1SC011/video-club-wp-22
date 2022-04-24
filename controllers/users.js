@@ -1,14 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const async = require('async');
+const config =require('config');
 const User = require('../models/user');
 
 function list(req, res, next) {
-  User.paginate({}, {page: 1}).then(objs => res.status(200).json({
-    message: "Lista de usuarios registrados.",
+  let page = req.params.page ? req.params.page : 1;
+
+  User.paginate({}, {page:page, limit:3}).then(objs => res.status(200).json ({
+    message: res.__('oklist.user'),
     obj: objs
   })).catch(e => res.status(500).json({
-    message: "No se pudo consultar la lista de usuarios",
+    message: res.__('oklist.user'),
     obj: e
   }));
 }
@@ -16,10 +19,10 @@ function list(req, res, next) {
 function index(req, res, next){
   const id = req.params.id;
   User.findOne({"_id":id}).then(obj => res.status(200).json({
-    message: `Usuario con el id ${id}.`,
+    message: res.__('ok.user'),
     obj: obj
   })).catch(e => res.status(500).json({
-    message: `No se pudo recuperar el usuario con el id ${id}.`,
+    message: res.__('bad.user'),
     obj: e
   }));
 }
@@ -45,10 +48,10 @@ function create(req, res, next){
       });
 
       user.save().then(obj => res.status(200).json({
-        message: 'Usuario creado correctamente',
+        message: res.__('cr.user'),
         obj: obj
       })).catch(e => res.status(500).json({
-        message: 'No se creo el usuario',
+        message: res.__('ncr.user'),
         obj: e
       }));
     });
@@ -66,10 +69,10 @@ function replace(req, res, next){
   });
 
   User.findOneAndUpdate({"_id":id}, user).then(obj => res.status(200).json({
-    message: "usuario reemplazado correctamente",
+    message:res.__('rp.user'),
     obj: obj
   })).catch(e => res.status(500).json({
-    message: "No se pudo actualizar el usuario",
+    message:res.__('nrp.user'),
     obj: e
   }))
 }
@@ -90,10 +93,10 @@ function edit(req, res, next){
   }
 
   User.findOneAndUpdate({"_id":id}, user).then(obj => res.status(200).json({
-    message: "Usuario actualizado correctamente",
+    message:res.__('up.user'),
     obj: obj
   })).catch( e => res.status(500).json({
-    message: "No se pudo actualizar el usuario",
+    message:res.__('nup.user'),
     obj: e
   }));
 }
@@ -101,10 +104,10 @@ function edit(req, res, next){
 function destroy(req, res, next){
   const id = req.params.id;
   User.remove({"_id":id}).then(obj => res.status(200).json({
-    message: "Usuario Eliminado Correctamente",
+    message:res.__('dl.user'),
     obj: obj
   })).catch(e => res.status(500).json({
-    message: "No se Pudo eliminar el usuario",
+    message:res.__('ndl.user'),
     obj: e
   }));
 }
