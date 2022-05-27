@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+      h1 Nuevo Actor
+      form(method='POST', action='/actors')
+        label(laberFor='name') Nombre:
+        input(type='text', name='name', id='name')
+        label(laberFor='lastName') Apellido:
+        input(type='text', name='lastName', id='lastName')
+        input(type='submit')

@@ -3,13 +3,11 @@ const config=require('config')
 const Actor = require('../models/actor');
 
 function list(req, res, next) {
-  Actor.find().then(objs => res.status(200).json({
-    message:res.__('oklist.actor'),
-    obj: objs
-  })).catch(e => res.status(500).json({
-    message:res.__('badlist.actor'),
-    obj: e
-  }));
+  let page = req.params.page ? req.params.page : 1;
+
+  // TODO: move limit to config
+  Actor.paginate({}, {page:page, limit: 5})
+       .then(objs => res.render("actor/list", {actors: objs}));
 }
 
 function index(req, res, next) {
@@ -23,6 +21,10 @@ function index(req, res, next) {
   }));
 }
 
+function add(req, res, next) {
+  res.render('actor/add', {});
+}
+
 function create(req, res, next) {
   const name=req.body.name;
   const lastName=req.body.lastName;
@@ -32,10 +34,7 @@ function create(req, res, next) {
     lastName:lastName
   });
 
-  actor.save().then(obj => res.status(200).json({
-    message:res.__('cr.actor'),
-    obj: obj
-  }))
+  actor.save().then(obj => res.redirect('actors/'))
     .catch(e => res.status(500).json({
       message:res.__('ncr.actor'),
       obj:e
@@ -96,5 +95,5 @@ function destroy(req, res, next) {
 }
 
 module.exports = {
-  list, index, create, replace, edit, destroy
+  list, index, add, create, replace, edit, destroy
 };

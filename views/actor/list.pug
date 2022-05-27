@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+      h1 Listado de actores
+      table
+        thead
+            tr
+                th Nombre
+                th Apellido
+                th
+                    a(href="/actors/add") Nuevo
+        tbody
+            each actor in actors.docs
+                tr
+                    td= actor.name
+                    td= actor.lastName
+                    td
+                        a(href='#') Editar
+                        form(method='POST')
+                            input(type='submit' action=`/actors/${actor.id}?_method=DELETE`)
+
+        a(href="/actors/1") <<
+        if actors.hasPrevPage
+            a(href=`/actors/${actors.prevPage}`) <
+        if actors.hasNextPage
+            a(href=`/actors/${actors.nextPage}`) >
+        a(href=`/actors/${actors.totalPages}`) >>

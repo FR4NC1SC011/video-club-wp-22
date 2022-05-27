@@ -2,6 +2,8 @@ const express = require('express');
 const controller = require('../controllers/actors');
 const router = express.Router();
 
+router.get('/add', controller.add);
+
 router.get('/:page?', controller.list);
 
 router.get('/show/:id', controller.index);
